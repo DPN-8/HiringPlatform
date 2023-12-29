@@ -18,9 +18,10 @@ import java.util.Map;
 public class MultipleChoiceQuestionResult {
 
     @Id
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long resultId;
 
-    private String contest_id;
+    private String userId;
 
     @Column(length = 1000)
     @Convert(converter = MapToStringConverter.class)
@@ -39,4 +40,8 @@ public class MultipleChoiceQuestionResult {
     @Enumerated(EnumType.STRING)
     private Result result;
 
+
+    @ManyToOne
+    @JoinColumn(name = "contest_id")
+    private Contest contest;
 }

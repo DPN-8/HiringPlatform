@@ -1,7 +1,6 @@
 package com.HiringPlarform.HiringPlatform.model.entity.tables;
 
 
-import com.HiringPlarform.HiringPlatform.model.enums.Category;
 import com.HiringPlarform.HiringPlatform.model.enums.Difficulty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,7 +28,7 @@ public class MultipleChoiceQuestion {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    @Enumerated(EnumType.STRING)
+    @OneToOne
+    @JoinColumn(name = "categoryId")
     private Category category;
-
 }

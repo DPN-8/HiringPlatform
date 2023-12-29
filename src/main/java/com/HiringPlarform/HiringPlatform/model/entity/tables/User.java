@@ -32,5 +32,9 @@ public class User {
    @Enumerated(EnumType.STRING)
    private AOI areaOfInterest;
 
+   @ManyToOne
+   @JoinColumn(name = "contest_id")
+   private Contest contest;
+
    private int yearOfExperience;
 }

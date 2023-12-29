@@ -10,6 +10,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  data:
+    mongodb:
+      uri = mongodb+srv://root:rathinam@cluster0:tiy85wb:mongodb:net/Result
 
 server :
   port : 8081

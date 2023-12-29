@@ -1,4 +1,4 @@
-package com.HiringPlarform.HiringPlatform.model;
+package com.HiringPlarform.HiringPlatform.repository;
 
 import com.HiringPlarform.HiringPlatform.model.entity.tables.MultipleChoiceQuestionResult;
 import com.HiringPlarform.HiringPlatform.model.entity.tables.User;

@@ -6,29 +6,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Time;
-
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "inteview_table")
 @Data
-@Table(name = "part_table")
-public class Part {
+public class Interview {
 
     @Id
-    private String partId;
-    private int easy;
-    private int medium;
-    private int hard;
+    private String interviewId;
 
     @OneToOne
-    @JoinColumn(name = "categoryId")
-    private Category category;
+    @JoinColumn(name = "userId")
+    private User user;
 
-    private Time assignedTime;
+    @OneToOne
+    @JoinColumn(name = "employeeId")
+    private User employee;
+
+    private String status;
 
     @ManyToOne
     @JoinColumn(name = "contest_id")
     private Contest contest;
 }
-

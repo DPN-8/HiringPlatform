@@ -27,19 +27,18 @@ public class Contest {
 
     private int passMark;
 
-    @OneToMany
-    @JoinColumn(name = "contest_id")
-    private List<User> users;
-
-    @OneToMany
-    @JoinColumn(name = "partId")
+    @OneToMany(mappedBy = "contest", cascade = CascadeType.ALL)
     private List<Part> parts;
 
-    @OneToMany
-    @JoinColumn(name = "resultId")
+    @OneToMany(mappedBy = "contest", cascade = CascadeType.ALL)
+    private List<User> users;
+
+    @OneToMany(mappedBy = "contest", cascade = CascadeType.ALL)
     private List<MultipleChoiceQuestionResult> multipleChoiceQuestionResults;
 
     @Enumerated(EnumType.STRING)
     private ContestType contestType;
 
+    @OneToMany(mappedBy = "contest", cascade = CascadeType.ALL)
+    private List<Interview> interviews;
 }
