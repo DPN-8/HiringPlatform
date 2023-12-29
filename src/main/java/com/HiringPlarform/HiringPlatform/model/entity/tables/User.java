@@ -1,8 +1,8 @@
 package com.HiringPlarform.HiringPlatform.model.entity.tables;
 
 
-import com.HiringPlarform.HiringPlatform.model.enums.AOI;
-import com.HiringPlarform.HiringPlatform.model.enums.Role;
+import com.HiringPlarform.HiringPlatform.model.entity.enums.AOI;
+import com.HiringPlarform.HiringPlatform.model.entity.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;

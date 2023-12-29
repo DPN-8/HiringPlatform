@@ -2,7 +2,7 @@ package com.HiringPlarform.HiringPlatform.model.entity.tables;
 
 
 import com.HiringPlarform.HiringPlatform.converters.MapToStringConverter;
-import com.HiringPlarform.HiringPlatform.model.enums.Result;
+import com.HiringPlarform.HiringPlatform.model.entity.enums.Result;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

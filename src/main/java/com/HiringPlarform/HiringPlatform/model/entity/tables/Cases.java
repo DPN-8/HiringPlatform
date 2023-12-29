@@ -1,6 +1,6 @@
 package com.HiringPlarform.HiringPlatform.model.entity.tables;
 
-import com.HiringPlarform.HiringPlatform.model.enums.CasesType;
+import com.HiringPlarform.HiringPlatform.model.entity.enums.CasesType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

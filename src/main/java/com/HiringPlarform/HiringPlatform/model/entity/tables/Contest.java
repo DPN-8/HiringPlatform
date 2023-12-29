@@ -1,7 +1,7 @@
 package com.HiringPlarform.HiringPlatform.model.entity.tables;
 
 
-import com.HiringPlarform.HiringPlatform.model.enums.ContestType;
+import com.HiringPlarform.HiringPlatform.model.entity.enums.ContestType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

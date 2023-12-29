@@ -1,7 +1,7 @@
 package com.HiringPlarform.HiringPlatform.model.entity.tables;
 
 
-import com.HiringPlarform.HiringPlatform.model.enums.Difficulty;
+import com.HiringPlarform.HiringPlatform.model.entity.enums.Difficulty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

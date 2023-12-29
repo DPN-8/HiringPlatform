@@ -1,4 +1,4 @@
-package com.HiringPlarform.HiringPlatform.model.enums;
+package com.HiringPlarform.HiringPlatform.model.entity.enums;
 
 public enum AOI {
     ALL,
