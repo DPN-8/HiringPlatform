@@ -18,10 +18,10 @@ import jakarta.persistence.Id;
 public class CodingResult {
 
     @Id
-    private String result_id;
+    private String resultId;
     private String userId;
-    private String contest_id;
-    private double total_percentage;
+    private String contestId;
+    private double totalPercentage;
     private List<questionObject> questions;
 
 }

@@ -33,12 +33,11 @@ public class Contest {
     @OneToMany(mappedBy = "contest", cascade = CascadeType.ALL)
     private List<User> users;
 
-    @OneToMany(mappedBy = "contest", cascade = CascadeType.ALL)
-    private List<MultipleChoiceQuestionResult> multipleChoiceQuestionResults;
-
     @Enumerated(EnumType.STRING)
     private ContestType contestType;
 
     @OneToMany(mappedBy = "contest", cascade = CascadeType.ALL)
     private List<Interview> interviews;
+
+    private int interviewSelected;
 }

@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://192.168.0.181:5432/HIRING_PLATFORM
     username : postgres
-    password : myPassword 
+    password : myPassword
   jpa:
     hibernate:
       ddl-auto: update
@@ -12,7 +12,12 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
   data:
     mongodb:
-      uri = mongodb+srv://root:rathinam@cluster0:tiy85wb:mongodb:net/Result
+      database: HIRING_PLATFORM
+      uri: mongodb+srv://deepan:PHp4VnpK2aCwX2Q7@mcqresult.ze52fxm.mongodb.net/
 
-server :
-  port : 8081
+server:
+  tomcat:
+    threads:
+      max: 200
+  port: 8081
+
