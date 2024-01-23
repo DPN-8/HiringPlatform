@@ -1,11 +1,11 @@
 spring:
   datasource:
-    url: jdbc:postgresql://192.168.0.181:5432/HIRING_PLATFORM
+    url: jdbc:postgresql://localhost:5432/HIRING_PLATFORM
     username : postgres
     password : myPassword
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:

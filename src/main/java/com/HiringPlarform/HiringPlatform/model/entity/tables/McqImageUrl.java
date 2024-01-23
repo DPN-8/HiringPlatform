@@ -1,23 +1,21 @@
 package com.HiringPlarform.HiringPlatform.model.entity.tables;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.checkerframework.checker.units.qual.N;
 
-@Entity
-@NoArgsConstructor
+
 @AllArgsConstructor
-@Table(name = "category_table")
+@NoArgsConstructor
 @Data
-@Builder
-public class Category{
+@Table(name = "mcq_image_url_table")
+@Entity
+public class McqImageUrl {
 
     @Id
-    @GeneratedValue
-    private int categoryId;
+    private String imageUrlId;
 
-    private String category;
+    private String imageUrl;
 }

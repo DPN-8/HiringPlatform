@@ -1,8 +1,7 @@
 package com.HiringPlarform.HiringPlatform.model.entity.enums;
 
-public enum Role {
+public enum TypeStatus {
 
-    CONTESTANTS,
-    EMPLOYEE,
-    ADMIN
+    COMPLETED,
+    UNCOMPLETED
 }

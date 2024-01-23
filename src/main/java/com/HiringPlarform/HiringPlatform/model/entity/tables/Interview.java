@@ -1,15 +1,23 @@
 package com.HiringPlarform.HiringPlatform.model.entity.tables;
 
 
+import com.HiringPlarform.HiringPlatform.model.entity.enums.InterviewResult;
+import com.HiringPlarform.HiringPlatform.model.entity.enums.InterviewType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "inteview_table")
+@Builder
+@Table(name = "interview_table")
 @Data
 public class Interview {
 
@@ -18,15 +26,27 @@ public class Interview {
 
     @OneToOne
     @JoinColumn(name = "userId")
+    @JsonIgnoreProperties("contest")
     private User user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "employeeId")
-    private User employee;
+    @JsonIgnoreProperties("contest")
+    private Employee employee;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private InterviewType interviewType;
+
+    private String feedBack;
+
+    @Enumerated(EnumType.STRING)
+    private InterviewResult interviewResult;
 
     @ManyToOne
-    @JoinColumn(name = "contest_id")
-    private Contest contest;
+    @JsonBackReference
+    @JoinColumn(name = "roundsId")
+    private Rounds rounds;
+
+    private LocalDateTime interviewTime;
 }
+

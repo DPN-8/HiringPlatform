@@ -1,9 +1,14 @@
 package com.HiringPlarform.HiringPlatform.model.entity.tables;
 
 
-import com.HiringPlarform.HiringPlatform.model.entity.enums.ContestType;
+import com.HiringPlarform.HiringPlatform.model.entity.enums.ContestStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 @Table(name = "contest_table")
 public class Contest {
 
@@ -21,23 +27,31 @@ public class Contest {
     private String contestId;
 
     private String name;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+
     private String description;
 
-    private int passMark;
+    @Enumerated(EnumType.STRING)
+    private ContestStatus contestStatus;
 
-    @OneToMany(mappedBy = "contest", cascade = CascadeType.ALL)
-    private List<Part> parts;
+    @OneToMany(mappedBy = "contest", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("contest")
+    private List<Rounds> rounds;
 
-    @OneToMany(mappedBy = "contest", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "contest", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("contest")
     private List<User> users;
 
-    @Enumerated(EnumType.STRING)
-    private ContestType contestType;
+    @ManyToMany(mappedBy = "contest", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties("contest")
+    private List<Employee> employees;
 
-    @OneToMany(mappedBy = "contest", cascade = CascadeType.ALL)
-    private List<Interview> interviews;
-
-    private int interviewSelected;
+    @Override
+    public String toString() {
+        return "Contest{" +
+                "contestId='" + contestId + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", contestStatus=" + contestStatus +
+                '}';
+    }
 }

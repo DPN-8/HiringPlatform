@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
+    Category findCategoryByCategory(com.HiringPlarform.HiringPlatform.model.entity.enums.Category coding);
 }

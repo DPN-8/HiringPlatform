@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.swing.text.html.HTML;
 import java.util.List;
 
 @Entity
@@ -23,9 +24,25 @@ public class CodingQuestion {
     @Column(length = 1000)
     private String question;
 
+    @OneToMany
+    @JoinColumn(name = "Id")
+    private List<CodingImageUrl> imageUrl;
+
     @OneToMany(mappedBy = "codingQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Cases> casesList;
 
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
+
+    @Column(length = 500)
+    private String explanation;
+
+    @Column(length = 200)
+    private String constraints;
+
+    @Column(length = 500)
+    private String inputFormat;
+
+    @Column(length = 500)
+    private String outputFormat;
 }

@@ -9,10 +9,9 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class casesObject {
+public class CasesObject {
 
     private String testcase_id;
-
     private String input;
     private String output;
     private String user_output;

@@ -22,6 +22,6 @@ public class CodingResult {
     private String userId;
     private String contestId;
     private double totalPercentage;
-    private List<questionObject> questions;
+    private List<QuestionObject> questions;
 
 }

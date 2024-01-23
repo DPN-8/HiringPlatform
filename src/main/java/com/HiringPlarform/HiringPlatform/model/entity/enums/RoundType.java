@@ -1,8 +1,8 @@
 package com.HiringPlarform.HiringPlatform.model.entity.enums;
 
-public enum Role {
+public enum RoundType {
 
-    CONTESTANTS,
-    EMPLOYEE,
-    ADMIN
+    MCQ,
+    CODING,
+    INTERVIEW
 }

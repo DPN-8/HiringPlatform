@@ -1,7 +1,9 @@
 package com.HiringPlarform.HiringPlatform.model.entity.enums;
 
-public enum ContestType {
 
-    FRESHERS,
-    EXPERIENCED
+
+public enum EmployeeType {
+
+    TECHNICAL_HR,
+    PERSONAL_HR
 }

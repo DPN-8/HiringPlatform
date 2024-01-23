@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Setter
@@ -14,13 +13,13 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Getter
 @Component
-public class questionObject {
+public class QuestionObject {
 
     private String qid;
     private String question;
     private String percentage;
     private String language;
-    private List<casesObject> testcase;
+    private List<CasesObject> testcase;
     private String code;
 
 }
