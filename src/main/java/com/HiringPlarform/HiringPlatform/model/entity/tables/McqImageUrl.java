@@ -10,7 +10,7 @@ import org.checkerframework.checker.units.qual.N;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "mcq_image_url_table")
+@Table(name = "mcq_image")
 @Entity
 public class McqImageUrl {
 

@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 public class QuestionObject {
 
     private String qid;
-    private String question;
     private String percentage;
     private String language;
     private List<CasesObject> testcase;

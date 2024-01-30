@@ -3,26 +3,25 @@ package com.HiringPlarform.HiringPlatform.model.entity.tables;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.Year;
+import java.time.LocalDateTime;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "user_educational_details")
-public class Resume {
+@Table(name = "user_session")
+public class UserSession {
 
     @Id
-    @OneToOne
-    private User user;
-
-    private String department;
-    private String resumeUrl;
-    private int yearOfGraduation;
+    private String sessionId;
+    private String roundId;
+    private LocalDateTime loginTime;
+    private LocalDateTime logoutTime;
+    private String userId;
+    private String uniqueId;
 }

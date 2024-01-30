@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "rounds_table")
+@Table(name = "round")
 public class Rounds {
 
     @Id
@@ -31,6 +31,8 @@ public class Rounds {
     @JoinColumn(name = "contest_id", nullable = false)
     private Contest contest;
 
+    private int participantsCounts;
+
     @Override
     public String toString() {
         return "Rounds{" +
@@ -38,7 +40,6 @@ public class Rounds {
                 ", roundType=" + roundType +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
-                ", assignedTime=" + assignedTime +
                 '}';
     }
 
@@ -54,6 +55,6 @@ public class Rounds {
     private LocalDateTime endTime;
 
     private int roundNumber;
+    private int pass;
 
-    private Duration assignedTime;
 }

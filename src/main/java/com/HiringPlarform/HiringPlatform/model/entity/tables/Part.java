@@ -16,7 +16,7 @@ import java.time.Duration;
 @AllArgsConstructor
 @Data
 @Builder
-@Table(name = "part_table")
+@Table(name = "part")
 public class Part {
 
     @Id

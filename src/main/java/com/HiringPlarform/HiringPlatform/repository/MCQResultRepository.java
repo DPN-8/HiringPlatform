@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface MCQResultRepository extends MongoRepository<MCQResult, String> {
-
     MCQResult findMCQResultByMcqResultId(String id);
 
 

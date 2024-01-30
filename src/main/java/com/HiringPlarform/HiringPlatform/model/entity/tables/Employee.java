@@ -2,9 +2,8 @@ package com.HiringPlarform.HiringPlatform.model.entity.tables;
 
 
 import com.HiringPlarform.HiringPlatform.model.entity.enums.EmployeeType;
-import com.HiringPlarform.HiringPlatform.model.entity.enums.InterviewStatus;
 import com.HiringPlarform.HiringPlatform.model.entity.enums.Role;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.HiringPlarform.HiringPlatform.model.entity.enums.Stack;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Builder
-@Table(name = "employee_table")
+@Table(name = "employee")
 public class Employee {
 
     @Id
@@ -35,7 +34,7 @@ public class Employee {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "contest_employee_table",
+            name = "contest_employee",
             joinColumns = {
                     @JoinColumn(name = "employee_id")
             },
@@ -50,5 +49,10 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Interview> interviews;
+
+    @Enumerated(EnumType.STRING)
+    private Stack stack;
+
+    private int yearsOfExperience; 
 
 }

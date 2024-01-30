@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "options_table")
+@Table(name = "option")
 public class Options {
 
     @Id
@@ -25,6 +25,8 @@ public class Options {
     private MultipleChoiceQuestion multipleChoiceQuestion;
 
     private String option;
+
+    private boolean isCorrect;
     @Override
     public String toString() {
         return "Options{" +

@@ -1,6 +1,8 @@
 package com.HiringPlarform.HiringPlatform.model.entity.tables;
 
+import com.HiringPlarform.HiringPlatform.model.entity.enums.Category;
 import com.HiringPlarform.HiringPlatform.model.entity.enums.Difficulty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "coding_table")
+@Table(name = "coding_question")
 public class CodingQuestion {
 
     @Id
@@ -28,21 +30,13 @@ public class CodingQuestion {
     @JoinColumn(name = "Id")
     private List<CodingImageUrl> imageUrl;
 
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
     @OneToMany(mappedBy = "codingQuestion", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("codingQuestion")
     private List<Cases> casesList;
 
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
-
-    @Column(length = 500)
-    private String explanation;
-
-    @Column(length = 200)
-    private String constraints;
-
-    @Column(length = 500)
-    private String inputFormat;
-
-    @Column(length = 500)
-    private String outputFormat;
 }

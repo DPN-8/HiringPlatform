@@ -15,7 +15,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "user_table")
+@Table(name = "user_details")
 @Data
 @Builder
 @NoArgsConstructor
@@ -39,7 +39,7 @@ public class User {
 
    @ManyToMany(fetch = FetchType.EAGER)
    @JoinTable(
-           name = "contest_user_table",
+           name = "contest_user",
            joinColumns = {
                    @JoinColumn(name = "user_id")
            },
@@ -52,4 +52,5 @@ public class User {
    @OneToOne(mappedBy = "user")
    private Resume resume;
 
+   private boolean isPassed;
 }

@@ -15,5 +15,4 @@ public class CasesObject {
     private String input;
     private String output;
     private String user_output;
-
 }

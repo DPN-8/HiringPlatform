@@ -4,7 +4,6 @@ package com.HiringPlarform.HiringPlatform.model.entity.tables;
 import com.HiringPlarform.HiringPlatform.model.entity.enums.ContestStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
@@ -20,15 +19,13 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-@Table(name = "contest_table")
+@Table(name = "contest")
 public class Contest {
 
     @Id
     private String contestId;
 
     private String name;
-
-    private String description;
 
     @Enumerated(EnumType.STRING)
     private ContestStatus contestStatus;
@@ -50,7 +47,6 @@ public class Contest {
         return "Contest{" +
                 "contestId='" + contestId + '\'' +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
                 ", contestStatus=" + contestStatus +
                 '}';
     }

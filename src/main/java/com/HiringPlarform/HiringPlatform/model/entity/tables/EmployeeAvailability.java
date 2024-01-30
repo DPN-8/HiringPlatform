@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "employee_availability_table")
+@Table(name = "employee_availability")
 @Entity
 public class EmployeeAvailability{
 

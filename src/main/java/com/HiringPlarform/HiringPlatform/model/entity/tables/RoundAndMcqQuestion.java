@@ -3,6 +3,7 @@ package com.HiringPlarform.HiringPlatform.model.entity.tables;
 
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,9 @@ import lombok.NoArgsConstructor;
 public class RoundAndMcqQuestion {
 
     @EmbeddedId
-    private RoundAndMCQ roundAndMCQ;
+    private ContestAndMcq contestAndMcq;
+
+    @ManyToOne
+    private Rounds rounds;
 
 }

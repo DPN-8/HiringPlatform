@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "category_table")
+@Table(name = "category")
 @Data
 @Builder
 public class Category{
@@ -19,5 +19,6 @@ public class Category{
     @GeneratedValue
     private int categoryId;
 
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private com.HiringPlarform.HiringPlatform.model.entity.enums.Category category;
 }

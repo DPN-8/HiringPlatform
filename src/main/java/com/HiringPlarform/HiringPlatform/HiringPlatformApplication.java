@@ -14,10 +14,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +29,13 @@ import java.util.Random;
 @SpringBootApplication
 @RestController
 @Slf4j
+@EnableScheduling
 public class HiringPlatformApplication {
 
-    public HiringPlatformApplication(ContestRepository contestRepository, MCQQuestion mcqQuestion, UserRepository userRepository, RoundsAndQuestionRepository roundsAndQuestionRepository) {
+    public HiringPlatformApplication(CodingQuestionRepository codingQuestionRepository, CasesRepository casesRepository, EmailTaskRepository emailTaskRepository, ContestRepository contestRepository, MCQQuestion mcqQuestion, UserRepository userRepository, RoundsAndQuestionRepository roundsAndQuestionRepository) {
+        this.codingQuestionRepository = codingQuestionRepository;
+        this.casesRepository = casesRepository;
+        this.emailTaskRepository = emailTaskRepository;
         this.contestRepository = contestRepository;
         this.mcqQuestion = mcqQuestion;
         this.userRepository = userRepository;
@@ -52,7 +58,10 @@ public class HiringPlatformApplication {
 												InterviewRepository interviewRepository,
 												MCQQuestion mcqQuestionRepository,
 												OptionsRepository optionsRepository,
-												RoundsAndQuestionRepository roundsAndQuestionRepository
+												RoundsAndQuestionRepository roundsAndQuestionRepository,
+												CodingQuestionRepository codingQuestionRepository,
+												MCQResultRepository mcqResultRepository,
+												RoundAndMcqQuestionRepository roundAndMcqQuestionRepository
 	) {
 		return args -> {
 			String firstContestId = RandomStringGenerator.generateRandomString(7);
@@ -62,31 +71,28 @@ public class HiringPlatformApplication {
 					.name("FirstContest")
 					.contestId(firstContestId)
 					.contestStatus(ContestStatus.UPCOMING)
-					.description("first Test contest")
 					.build();
 
 			for(int i = 0; i < 4; i++) {
 				var category = Category.builder()
 						.build();
 				if(i == 1) {
-					category.setCategory(String.valueOf(com.HiringPlarform.HiringPlatform.model.entity.enums.Category.APTITUDE));
+					category.setCategory(com.HiringPlarform.HiringPlatform.model.entity.enums.Category.APTITUDE_MCQ);
 				} else if( i== 2) {
-					category.setCategory(String.valueOf(com.HiringPlarform.HiringPlatform.model.entity.enums.Category.LOGICAL));
+					category.setCategory(com.HiringPlarform.HiringPlatform.model.entity.enums.Category.LOGICAL_MCQ);
 				} else if(i == 3) {
-					category.setCategory(String.valueOf(com.HiringPlarform.HiringPlatform.model.entity.enums.Category.VERBAL));
+					category.setCategory(com.HiringPlarform.HiringPlatform.model.entity.enums.Category.VERBAL_MCQ);
 				} else  {
-					category.setCategory(String.valueOf(com.HiringPlarform.HiringPlatform.model.entity.enums.Category.CODING));
+					category.setCategory(com.HiringPlarform.HiringPlatform.model.entity.enums.Category.TECHNICAL_MCQ);
 				}
 				categoryRepository.save(category);
 			}
-
 
 
 			var secondContest = Contest.builder()
 					.name("secondContest")
 					.contestId(secondContestId)
 					.contestStatus(ContestStatus.CURRENT)
-					.description("second Test contest")
 					.build();
 
 			contestRepository.save(firstContest);
@@ -96,16 +102,23 @@ public class HiringPlatformApplication {
 					.endTime(LocalDateTime.now())
 					.roundType(RoundType.INTERVIEW)
 					.contest(firstContest)
+					.startTime(LocalDateTime.now())
+					.roundNumber(2)
 					.roundsId(RandomStringGenerator.generateRandomString(7))
-					.assignedTime(Duration.ofMinutes(40))
 					.build();
+
 			var firstContestRoundMCQ = Rounds.builder()
 					.endTime(LocalDateTime.now())
 					.roundType(RoundType.MCQ)
+					.startTime(LocalDateTime.now())
 					.contest(firstContest)
+					.roundNumber(1)
 					.roundsId(RandomStringGenerator.generateRandomString(7))
-					.assignedTime(Duration.ofMinutes(40))
 					.build();
+
+			List<Rounds> roundsList = new ArrayList<>();
+			roundsList.add(firstContestRound);
+			roundsList.add(firstContestRoundMCQ);
 
 
 
@@ -120,17 +133,22 @@ public class HiringPlatformApplication {
 					.endTime(LocalDateTime.now())
 					.roundType(RoundType.INTERVIEW)
 					.contest(secondContest)
+					.roundNumber(2)
+					.startTime(LocalDateTime.now())
 					.roundsId(RandomStringGenerator.generateRandomString(7))
-					.assignedTime(Duration.ofMinutes(40))
 					.build();
 
 			var secondContestRoundMCQ = Rounds.builder()
+					.roundNumber(1)
 					.endTime(LocalDateTime.now())
 					.roundType(RoundType.MCQ)
 					.contest(secondContest)
+					.startTime(LocalDateTime.now())
 					.roundsId(RandomStringGenerator.generateRandomString(7))
-					.assignedTime(Duration.ofMinutes(40))
 					.build();
+
+			roundsList.add(secondContestRound);
+			roundsList.add(secondContestRoundMCQ);
 
 			roundsRepository.save(firstContestRound);
 			roundsRepository.save(firstContestRoundMCQ);
@@ -138,6 +156,10 @@ public class HiringPlatformApplication {
 			roundsRepository.save(secondContestRoundMCQ);
 
 			List<Category> categoryList = categoryRepository.findAll();
+
+			for(Rounds rounds : roundsList) {
+				createEmailTask(rounds);
+			}
 
 			for(Category category : categoryList) {
 				codingPart.setPartId(RandomStringGenerator.generateRandomString(10));
@@ -267,7 +289,7 @@ public class HiringPlatformApplication {
 			List<Interview> interview = distributeStudents(firstRoundPassedStudents, employeeAvailabilities, firstContestRound);
 			interviewRepository.saveAll(interview);
 			addMcqQuestion(mcqQuestionRepository, categoryRepository, optionsRepository, firstContestRoundMCQ);
-
+			addCodingQuestion();
 			List<MultipleChoiceQuestion> randomQuestions = new ArrayList<>();
 			List<Part> parts = partRepository.findAllByRounds_RoundsId(firstContestRoundMCQ.getRoundsId());
 			for(Part part : parts) {
@@ -286,14 +308,106 @@ public class HiringPlatformApplication {
 
 
 			for(MultipleChoiceQuestion question : randomQuestions) {
+				ContestAndMcq contestAndMcq = new ContestAndMcq();
+				contestAndMcq.setContest(firstContest);
+				contestAndMcq.setMultipleChoiceQuestion(question);
 				var roundAndQuestion = RoundAndMcqQuestion.builder()
-						.roundAndMCQ(new RoundAndMCQ(firstContestRoundMCQ, question))
+						.contestAndMcq(contestAndMcq)
+						.rounds(firstContestRound)
 						.build();
-
 				roundsAndQuestionRepository.save(roundAndQuestion);
 			}
+
+			List<MultipleChoiceQuestion> multipleChoiceQuestions = roundAndMcqQuestionRepository.findByRoundId(firstContestRoundMCQ.getRoundsId());
+			List<User> roundUsers = userRepository.findUsersByContest(firstContest);
+
+			for(User user : roundUsers) {
+				List<MCQResult> mcqResults = new ArrayList<>();
+				var response = MCQResult.builder()
+						.contestId(firstContestId)
+						.roundId(firstContestRound.getRoundsId())
+						.mcqResultId(RandomStringGenerator.generateRandomString(10))
+						.build();
+				List<PartWiseResponse> savedMcqs = new ArrayList<>();
+				for(MultipleChoiceQuestion multipleChoiceQuestion : multipleChoiceQuestions) {
+					PartWiseResponse savedMcq = new PartWiseResponse();
+//					savedMcq.setQuestionId(multipleChoiceQuestion.getQuestion_id());
+					List<UserResponse> userResponses = new ArrayList<>();
+					List<Options> options = multipleChoiceQuestion.getOptions();
+					String answer = options.get(3).getOption();
+					UserResponse userResponse = new UserResponse();
+					userResponse.setChosenAnswer(answer);
+					userResponses.add(userResponse);
+					savedMcq.setUserResponse(userResponses);
+					savedMcqs.add(savedMcq);
+				}
+			}
+
 		};
 
+	}
+
+	private final CodingQuestionRepository codingQuestionRepository;
+	private final CasesRepository casesRepository;
+
+	private void addCodingQuestion() {
+		Faker faker = new Faker();
+		CodingQuestion codingQuestion = new CodingQuestion();
+		codingQuestion.setQuestion("Given a string, the task is to reverse the order of the words in the given string. \n" +
+				"\n");
+		codingQuestion.setDifficulty(Difficulty.EASY);
+		codingQuestion.setCategory(com.HiringPlarform.HiringPlatform.model.entity.enums.Category.STRINGS_CODING);
+		codingQuestion.setQuestionId(RandomStringGenerator.generateRandomLong(7));
+		codingQuestionRepository.save(codingQuestion);
+		Cases cases1 = new Cases();
+		cases1.setCodingQuestion(codingQuestion);
+		cases1.setCasesType(CasesType.TEST);
+		cases1.setCaseId(RandomStringGenerator.generateRandomLong(7));
+		cases1.setInput("geeks quiz practice code");
+		cases1.setOutput("code practice quiz geeks");
+		casesRepository.save(cases1);
+		Cases cases2 = new Cases();
+		cases2.setCodingQuestion(codingQuestion);
+		cases2.setCasesType(CasesType.SAMPLE);
+		cases2.setCaseId(RandomStringGenerator.generateRandomLong(7));
+		cases2.setInput("geeks quiz practice code");
+		cases2.setOutput("code practice quiz geeks");
+		casesRepository.save(cases2);
+	}
+	public void createEmailTask(Rounds round) {
+		LocalDateTime taskTime;
+		if (round.getRoundNumber() == 1) {
+			taskTime = round.getStartTime().minusHours(1);
+			saveEmailTask(buildEmailTask(round, taskTime));
+			taskTime = round.getEndTime().plusMinutes(30);
+		} else {
+			taskTime = round.getEndTime().plusMinutes(6);
+		}
+		saveEmailTask(buildEmailTask(round, taskTime));
+	}
+
+	private static EmailTask buildEmailTask(Rounds round, LocalDateTime taskTime) {
+		return EmailTask.builder()
+				.rounds(round)
+				.taskStatus(TaskStatus.PENDING)
+				.taskTime(taskTime)
+				.build();
+	}
+
+
+	private final EmailTaskRepository emailTaskRepository;
+
+	private void saveEmailTask(EmailTask emailTask) {
+		emailTaskRepository.save(emailTask);
+	}
+
+
+	private EmailTask createTask(Rounds rounds) {
+		EmailTask emailTask = new EmailTask();
+		emailTask.setTaskStatus(TaskStatus.PENDING);
+		emailTask.setRounds(rounds);
+		emailTask.setId(RandomStringGenerator.generateRandomLong(10));
+		return emailTask;
 	}
 
 	private List<Interview> distributeStudents(List<User> users, List<EmployeeAvailability> employeeAvailabilities, Rounds rounds) {
@@ -357,7 +471,6 @@ public class HiringPlatformApplication {
 					.question(faker.harryPotter().quote())
 					.build();
 			int num = random.nextInt(choice.length());
-			System.out.println(num);
 			char diff = choice.charAt(num);
 			int pos = random.nextInt(choice.length());
 			char diffLev = choice.charAt(pos);
@@ -365,7 +478,6 @@ public class HiringPlatformApplication {
 				case '1' :
 					Category category = categoryList.get(1);
 					question.setCategory(category);
-
 					break;
 				case '2':
 					Category category1 = categoryList.get(2);
@@ -394,10 +506,17 @@ public class HiringPlatformApplication {
 						.option(faker.harryPotter().character())
 						.build();
 				options.setMultipleChoiceQuestion(question);
+				switch (j) {
+					case 1, 2, 3:
+						options.setCorrect(false);
+						break;
+                    case 0:
+						options.setCorrect(true);
+						break;
+				}
 				optionsRepository.save(options);
 			}
-			log.info(question.toString());
-			}
+		}
 
 	}
 
@@ -461,13 +580,48 @@ public class HiringPlatformApplication {
 		return userDtos;
 	}
 
+	@GetMapping("/rounds/{id}")
+	public List<MultipleChoiceQuestion> getQuestions(@PathVariable String id) {
+		return roundsAndQuestionRepository.getRandomQuestions(id);
+	}
+
 	@GetMapping("/user/{userId}")
 	public User user(@PathVariable String userId) {
 		return userRepository.findUserByUserId(userId);
 	}
 
-	@GetMapping("/rounds/{id}")
-	public List<MultipleChoiceQuestion> getQuestions(@PathVariable String id) {
-		return roundsAndQuestionRepository.getRandomQuestions(id);
+	@GetMapping("/coding/questions")
+	public ResponseEntity<?> codingQuestions() {
+		List<CodingQuestion> codingQuestions = codingQuestionRepository.findAll();
+		return ResponseEntity.ok(codingQuestions);
+	}
+
+	@Scheduled(fixedRate = 1000)
+	public void scheduler() throws InterruptedException {
+		List<EmailTask> emailTasks = emailTaskRepository.findEmailTasksByTaskTimeAfterAndTaskTimeBefore(LocalDateTime.now(), LocalDateTime.now().plusMinutes(5));
+		log.info(LocalDateTime.now().toString());
+		Thread.sleep(5000);
+		int count = 0;
+		for(EmailTask emailTask : emailTasks) {
+			if(emailTask != null) {
+				if(emailTask.getTaskStatus() == TaskStatus.PENDING) {
+					log.info(emailTask.getRounds().getRoundsId());
+				} else if(emailTask.getTaskStatus() == TaskStatus.RETRY) {
+					log.info("An Error occurred while sending email for this round " + emailTask.getRounds().getRoundsId());
+					emailTask.setTaskStatus(TaskStatus.FAILED);
+					emailTaskRepository.save(emailTask);
+				} else if (emailTask.getTaskStatus() == TaskStatus.FAILED) {
+					log.info("Email task failed for this round " + emailTask.getRounds().getRoundsId());
+				}
+				if (count == 0) {
+					emailTask.setTaskStatus(TaskStatus.SUCCESS);
+					emailTaskRepository.save(emailTask);
+					count++;
+				} else {
+					emailTask.setTaskStatus(TaskStatus.RETRY);
+					emailTaskRepository.save(emailTask);
+				}
+			}
+		}
 	}
 }

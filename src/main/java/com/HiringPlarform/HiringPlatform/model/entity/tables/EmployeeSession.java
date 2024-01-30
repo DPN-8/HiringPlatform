@@ -1,6 +1,5 @@
 package com.HiringPlarform.HiringPlatform.model.entity.tables;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -8,18 +7,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
-//@Entity
+import java.time.LocalDateTime;
 @Data
-//@Table(name = "token_table")
-public class Token {
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "employee_session")
+public class EmployeeSession {
 
     @Id
-    private Long id;
-
+    private String sessionId;
+    private LocalDateTime loginTime;
+    private LocalDateTime logoutTime;
     private String userId;
-    private String token;
-    private boolean revoked;
-    private boolean expired;
+    private String uniqueId;
 }

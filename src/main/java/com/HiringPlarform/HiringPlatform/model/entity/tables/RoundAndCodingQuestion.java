@@ -16,7 +16,9 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 public class RoundAndCodingQuestion {
 
     @EmbeddedId
-    private RoundAndCoding roundAndCoding;
+    private ContestAndCoding roundAndCoding;
 
+    @ManyToOne
+    private Rounds rounds;
 
 }

@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Builder
-@Table(name = "mcq_table")
+@Table(name = "mcq_question")
 public class MultipleChoiceQuestion {
 
     @Id

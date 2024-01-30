@@ -6,7 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-//@AllArgsConstructor
-//@NoArgsConstructor
-public class PasswordReset {
+@NoArgsConstructor
+@AllArgsConstructor
+public class DifficultyWiseMark {
+
+    private String difficulty;
+    private float percentage;
 }

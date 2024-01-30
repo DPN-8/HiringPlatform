@@ -13,10 +13,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class RoundAndMCQ implements Serializable {
+public class ContestAndMcq implements Serializable {
 
     @ManyToOne
-    private Rounds rounds;
+    private Contest contest;
 
     @ManyToOne
     private MultipleChoiceQuestion multipleChoiceQuestion;
